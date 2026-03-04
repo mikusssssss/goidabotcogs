@@ -17,7 +17,7 @@ class Links(commands.Cog):
         embed.add_field(name="Report a Bug", value="[Click here](https://github.com/mikusssssss/HardFortniteStats/issues)", inline=False)
         embed.set_footer(text="goidabot")
 
-        await interaction.response.send_message(embed=embed)
+        await ctx.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Links(bot))
