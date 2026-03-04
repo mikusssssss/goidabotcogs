@@ -1,5 +1,4 @@
 from redbot.core import commands
-from redbot.core.utils.chat_formatting import *
 import discord
 
 class SayHello(commands.Cog):
@@ -7,7 +6,6 @@ class SayHello(commands.Cog):
         self.bot = bot
 
     async def get_embed_color(self, guild):
-        from redbot.core import Config
         color = await self.bot._config.color()
         return discord.Color(color)
 
@@ -22,7 +20,7 @@ class SayHello(commands.Cog):
             name=interaction.user.display_name,
             icon_url=interaction.user.display_avatar.url
         )
-        embed.set_footer(text=f"Sent by {interaction.user.display_name}")
+        embed.set_footer(text=f"goidabot | {interaction.user.name}", icon_url=interaction.user.display_avatar.url)
         await interaction.response.send_message(embed=embed)
 
     @discord.app_commands.command(name="saywithimage", description="Make the bot repeat your message with an image")
@@ -37,7 +35,7 @@ class SayHello(commands.Cog):
             icon_url=interaction.user.display_avatar.url
         )
         embed.set_image(url=image.url)
-        embed.set_footer(text=f"Sent by {interaction.user.display_name}")
+        embed.set_footer(text=f"goidabot | {interaction.user.name}", icon_url=interaction.user.display_avatar.url)
         await interaction.response.send_message(embed=embed)
 
 async def setup(bot):
