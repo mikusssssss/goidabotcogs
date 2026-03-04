@@ -20,7 +20,7 @@ class SayHello(commands.Cog):
             name=interaction.user.display_name,
             icon_url=interaction.user.display_avatar.url
         )
-        embed.set_footer(text=f"goidabot | {interaction.user.name}", icon_url=interaction.user.display_avatar.url)
+        embed.set_footer(text=f"goidabot | {interaction.user.name}", icon_url=self.bot.user.display_avatar.url)
         await interaction.response.send_message(embed=embed)
 
     @discord.app_commands.command(name="saywithimage", description="Make the bot repeat your message with an image")
@@ -35,7 +35,7 @@ class SayHello(commands.Cog):
             icon_url=interaction.user.display_avatar.url
         )
         embed.set_image(url=image.url)
-        embed.set_footer(text=f"goidabot | {interaction.user.name}", icon_url=interaction.user.display_avatar.url)
+        embed.set_footer(text=f"goidabot | {interaction.user.name}", icon_url=self.bot.user.display_avatar.url)
         await interaction.response.send_message(embed=embed)
 
 async def setup(bot):
