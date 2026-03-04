@@ -22,7 +22,7 @@ class ServerWhitelist(commands.Cog):
             if ctx.valid:
                 ctx.command = None
 
-    @commands.group(name="whitelist")
+    @commands.group(name="swhitelist")
     @commands.is_owner()
     async def whitelist(self, ctx):
         """Manage the server whitelist."""
