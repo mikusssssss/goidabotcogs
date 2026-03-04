@@ -5,8 +5,8 @@ class Links(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @discord.app_commands.command(name="links", description="Shows useful links for the bot")
-    async def links(self, interaction: discord.Interaction):
+    @commands.command(name="links")
+    async def links(self, ctx):
         embed = discord.Embed(
             title="goidabot links",
             description="github links, yada yada",
