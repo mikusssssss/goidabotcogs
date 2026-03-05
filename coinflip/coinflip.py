@@ -2,6 +2,30 @@ from redbot.core import commands
 import discord
 import random
 
+class SideView(discord.ui.View):
+    def __init__(self, user):
+        super().__init__(timeout=30)
+        self.user = user
+        self.side = None
+
+    @discord.ui.button(label="Heads", style=discord.ButtonStyle.primary, emoji="🪙")
+    async def heads(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user != self.user:
+            await interaction.response.send_message("❌ This isn't for you!", ephemeral=True)
+            return
+        self.side = "Heads"
+        self.stop()
+        await interaction.response.defer()
+
+    @discord.ui.button(label="Tails", style=discord.ButtonStyle.secondary, emoji="🪙")
+    async def tails(self, interaction: discord.Interaction, button: discord.ui.Button):
+        if interaction.user != self.user:
+            await interaction.response.send_message("❌ This isn't for you!", ephemeral=True)
+            return
+        self.side = "Tails"
+        self.stop()
+        await interaction.response.defer()
+
 class ChallengeView(discord.ui.View):
     def __init__(self, challenger, opponent):
         super().__init__(timeout=30)
@@ -36,14 +60,30 @@ class CoinFlip(commands.Cog):
         color = await self.bot._config.color()
 
         if opponent is None:
-            result = random.choice(["Heads", "Tails"])
+            # pick a side for solo
+            view = SideView(ctx.author)
             embed = discord.Embed(
-                title="Coin Flip",
-                description=f"**{result}!**",
+                title="🪙 Coin Flip",
+                description="Pick your side!",
                 color=discord.Color(color)
             )
             embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
-            await ctx.send(embed=embed)
+            msg = await ctx.send(embed=embed, view=view)
+            await view.wait()
+
+            if view.side is None:
+                await msg.edit(content="You didn't pick a side in time!", embed=None, view=None)
+                return
+
+            result = random.choice(["Heads", "Tails"])
+            won = view.side == result
+            embed = discord.Embed(
+                title="🪙 Coin Flip",
+                description=f"You picked **{view.side}** — it landed on **{result}**!\n\n{'You win!' if won else 'You lose!'}",
+                color=discord.Color.green() if won else discord.Color.red()
+            )
+            embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
+            await msg.edit(embed=embed, view=None)
             return
 
         if opponent == ctx.author:
@@ -54,15 +94,15 @@ class CoinFlip(commands.Cog):
             await ctx.send("You can't flip against a bot!")
             return
 
+        # send message
         view = ChallengeView(ctx.author, opponent)
         embed = discord.Embed(
-            title="🪙 Coin Flip Challenge",
+            title="Coin Flip Challenge",
             description=f"{ctx.author.mention} has challenged {opponent.mention} to a coin flip!\n\n{opponent.mention}, do you accept?",
             color=discord.Color(color)
         )
         embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
         msg = await ctx.send(embed=embed, view=view)
-
         await view.wait()
 
         if view.accepted is None:
@@ -73,24 +113,36 @@ class CoinFlip(commands.Cog):
             await msg.edit(content=f"{opponent.mention} declined the challenge.", embed=None, view=None)
             return
 
-        # flip the coins
-        author_flip = random.choice(["Heads", "Tails"])
-        opponent_flip = random.choice(["Heads", "Tails"])
-
-        # keep flipping until someone wins
-        while author_flip == opponent_flip:
-            author_flip = random.choice(["Heads", "Tails"])
-            opponent_flip = random.choice(["Heads", "Tails"])
-
-        winner = ctx.author if author_flip == "Heads" else opponent
-
-        result_embed = discord.Embed(
-            title="🪙 Coin Flip Results",
+        # person challenging picks side
+        view = SideView(ctx.author)
+        embed = discord.Embed(
+            title="🪙 Pick Your Side",
+            description=f"{ctx.author.mention}, pick your side!",
             color=discord.Color(color)
         )
-        result_embed.add_field(name=ctx.author.display_name, value=f"**{author_flip}**", inline=True)
-        result_embed.add_field(name=opponent.display_name, value=f"**{opponent_flip}**", inline=True)
-        result_embed.add_field(name="Winner", value=f"{winner.mention}!", inline=False)
+        embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
+        await msg.edit(embed=embed, view=view)
+        await view.wait()
+
+        if view.side is None:
+            await msg.edit(content=f"⏰ {ctx.author.mention} didn't pick a side in time. Challenge cancelled!", embed=None, view=None)
+            return
+
+        challenger_side = view.side
+        opponent_side = "Tails" if challenger_side == "Heads" else "Heads"
+
+        # actually flips
+        result = random.choice(["Heads", "Tails"])
+        winner = ctx.author if result == challenger_side else opponent
+
+        result_embed = discord.Embed(
+            title="Coin Flip Results",
+            description=f"The coin landed on **{result}**!",
+            color=discord.Color(color)
+        )
+        result_embed.add_field(name=ctx.author.display_name, value=f"**{challenger_side}**", inline=True)
+        result_embed.add_field(name=opponent.display_name, value=f"**{opponent_side}**", inline=True)
+        result_embed.add_field(name="Winner", value=f"🏆 {winner.mention}!", inline=False)
         result_embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
         await msg.edit(embed=result_embed, view=None)
 
