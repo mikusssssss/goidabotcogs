@@ -79,7 +79,7 @@ class CoinFlip(commands.Cog):
             won = view.side == result
             embed = discord.Embed(
                 title="🪙 Coin Flip",
-                description=f"You picked **{view.side}** — it landed on **{result}**!\n\n{'You win!' if won else 'You lose!'}",
+                description=f"You picked **{view.side}**, it landed on **{result}**!\n\n{'You win!' if won else 'You lose!'}",
                 color=discord.Color.green() if won else discord.Color.red()
             )
             embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
@@ -125,7 +125,7 @@ class CoinFlip(commands.Cog):
         await view.wait()
 
         if view.side is None:
-            await msg.edit(content=f"⏰ {ctx.author.mention} didn't pick a side in time. Challenge cancelled!", embed=None, view=None)
+            await msg.edit(content=f"{ctx.author.mention} didn't pick a side in time. Challenge cancelled!", embed=None, view=None)
             return
 
         challenger_side = view.side
