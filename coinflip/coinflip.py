@@ -185,7 +185,8 @@ class CoinFlip(commands.Cog):
         medals = ["1.", "2.", "3."]
         leaderboard = ""
         for i, (user_id, wins, losses, percent) in enumerate(entries[:10]):
-            user = ctx.guild.get_member(user_id) or await self.bot.fetch_user(user_id)
+            member = ctx.guild.get_member(user_id) if ctx.guild else None
+            user = member or await self.bot.fetch_user(user_id)
             name = user.display_name if hasattr(user, "display_name") else str(user)
             medal = medals[i] if i < 3 else f"{i+1}."
             leaderboard += f"{medal} **{name}** — {wins}W / {losses}L ({percent:.1f}%)\n"
