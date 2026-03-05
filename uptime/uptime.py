@@ -43,7 +43,7 @@ class Uptime(commands.Cog):
     @commands.command(name="botstatus")
     async def botstatus(self, ctx):
         now = datetime.now(timezone.utc)
-        session_seconds = (now - self.bot.uptime).total_seconds()
+        session_seconds = (now - self.bot.uptime.replace(tzinfo=timezone.utc)).total_seconds()
 
         data = await self.config.all()
         first_seen = data["first_seen"]
