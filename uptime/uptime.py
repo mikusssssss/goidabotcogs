@@ -11,7 +11,6 @@ class Uptime(commands.Cog):
             total_uptime_seconds=0,
             last_start=None
         )
-        self.start_time = datetime.now(timezone.utc)
 
     async def cog_load(self):
         now = datetime.now(timezone.utc).timestamp()
@@ -42,9 +41,9 @@ class Uptime(commands.Cog):
         return " ".join(parts) if parts else "0s"
 
     @commands.command(name="botstatus")
-    async def uptime(self, ctx):
+    async def botstatus(self, ctx):
         now = datetime.now(timezone.utc)
-        session_seconds = (now - self.start_time).total_seconds()
+        session_seconds = (now - self.bot.uptime).total_seconds()
 
         data = await self.config.all()
         first_seen = data["first_seen"]
