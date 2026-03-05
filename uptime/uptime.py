@@ -60,6 +60,7 @@ class Uptime(commands.Cog):
         embed.add_field(name="Current Session", value=self.format_duration(session_seconds), inline=False)
         embed.add_field(name="Total Uptime", value=self.format_duration(total_uptime_seconds), inline=False)
         embed.add_field(name="Uptime Percentage", value=f"{uptime_percent:.2f}%", inline=False)
+        embed.add_field(name="Ping", value=f"{round(self.bot.latency * 1000)}ms", inline=False)
         embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
         await ctx.send(embed=embed)
 
