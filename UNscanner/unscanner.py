@@ -2,7 +2,7 @@ from redbot.core import commands, Config
 import discord
 from datetime import datetime, timezone, timedelta
 
-KEYWORDS = ["netanyahu", "big yahu", "jew", "goy", "juda", "mossad", "goyim" "yahu"]
+KEYWORDS = ["netanyahu", "big yahu", "jew", "goy", "juda", "mossad", "goyim", "yahu"]
 CHALLENGE_NAME = "BIG Y Challenge"
 FAIL_MESSAGE = "YOU FAILED!!! THE UN HAS BEEN NOTIFIED. YOU ARE A THIEF!!! YOU ARE A THIEF!!! YOU ARE A THIEF!!!  "
 WIN_MESSAGE = "Good! You have not disrespected the best country in the last 2 days! The UN is happy."
@@ -53,4 +53,5 @@ class StatusPage(commands.Cog):
         await ctx.send(embed=embed)
 
 async def setup(bot):
+
     await bot.add_cog(StatusPage(bot))
