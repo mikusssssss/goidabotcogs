@@ -41,7 +41,7 @@ class Uptime(commands.Cog):
         if secs: parts.append(f"{secs}s")
         return " ".join(parts) if parts else "0s"
 
-    @commands.command(name="uptime")
+    @commands.command(name="botstatus")
     async def uptime(self, ctx):
         now = datetime.now(timezone.utc)
         session_seconds = (now - self.start_time).total_seconds()
