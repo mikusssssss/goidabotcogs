@@ -42,26 +42,27 @@ class Uptime(commands.Cog):
 
     @commands.command(name="botstatus")
     async def botstatus(self, ctx):
-        now = datetime.now(timezone.utc)
-        session_seconds = (now - self.bot.uptime.replace(tzinfo=timezone.utc)).total_seconds()
+    now = datetime.now(timezone.utc)
+    session_seconds = (now - self.bot.uptime.replace(tzinfo=timezone.utc)).total_seconds()
 
-        data = await self.config.all()
-        first_seen = data["first_seen"]
-        total_uptime_seconds = data["total_uptime_seconds"] + session_seconds
+    data = await self.config.all()
+    first_seen = data["first_seen"]
+    # Add current session to stored total for display only, don't save it
+    total_uptime_seconds = data["total_uptime_seconds"] + session_seconds
 
-        if first_seen:
-            total_possible = now.timestamp() - first_seen
-            uptime_percent = (total_uptime_seconds / total_possible) * 100 if total_possible > 0 else 100
-        else:
-            uptime_percent = 100
+    if first_seen:
+        total_possible = now.timestamp() - first_seen
+        uptime_percent = min((total_uptime_seconds / total_possible) * 100, 100) if total_possible > 0 else 100
+    else:
+        uptime_percent = 100
 
-        color = await self.bot._config.color()
-        embed = discord.Embed(title="Bot Uptime", color=discord.Color(color))
-        embed.add_field(name="Current Session", value=self.format_duration(session_seconds), inline=False)
-        embed.add_field(name="Total Uptime", value=self.format_duration(total_uptime_seconds), inline=False)
-        embed.add_field(name="Uptime Percentage", value=f"{uptime_percent:.2f}%", inline=False)
-        embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
-        await ctx.send(embed=embed)
-
+    color = await self.bot._config.color()
+    embed = discord.Embed(title="Bot Uptime", color=discord.Color(color))
+    embed.add_field(name="Current Session", value=self.format_duration(session_seconds), inline=False)
+    embed.add_field(name="Total Uptime", value=self.format_duration(total_uptime_seconds), inline=False)
+    embed.add_field(name="Uptime Percentage", value=f"{uptime_percent:.2f}%", inline=False)
+    embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
+    await ctx.send(embed=embed)
+    
 async def setup(bot):
     await bot.add_cog(Uptime(bot))
