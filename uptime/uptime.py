@@ -56,8 +56,10 @@ class Uptime(commands.Cog):
             uptime_percent = 100
 
         color = await self.bot._config.color()
+        bot_start = self.bot.uptime.replace(tzinfo=timezone.utc)
         embed = discord.Embed(title="Bot Uptime", color=discord.Color(color))
         embed.add_field(name="Current Session", value=self.format_duration(session_seconds), inline=False)
+        embed.add_field(name="Running Since", value=f"<t:{int(bot_start.timestamp())}:F> (<t:{int(bot_start.timestamp())}:R>)", inline=False)
         embed.add_field(name="Total Uptime", value=self.format_duration(total_uptime_seconds), inline=False)
         embed.add_field(name="Uptime Percentage", value=f"{uptime_percent:.2f}%", inline=False)
         embed.add_field(name="Ping", value=f"{round(self.bot.latency * 1000)}ms", inline=False)
