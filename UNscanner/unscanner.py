@@ -40,18 +40,21 @@ class StatusPage(commands.Cog):
             color=discord.Color(color)
         )
 
-        # Leaderboard
-        sorted_counts = sorted(recent_counts.items(), key=lambda x: x[1], reverse=True)
-        leaderboard = ""
-        medals = ["🥇", "🥈", "🥉"]
-        for i, (keyword, count) in enumerate(sorted_counts):
-            medal = medals[i] if i < 3 else f"`{i+1}.`"
-            leaderboard += f"{medal} **{keyword}** — {count} detection(s)\n"
+sorted_counts = sorted(
+    [(k, v) for k, v in recent_counts.items() if v > 0],
+    key=lambda x: x[1],
+    reverse=True
+)
 
-        embed.add_field(name="━━━ Leaderboard ━━━", value=leaderboard, inline=False)
-        embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
-        await ctx.send(embed=embed)
+if sorted_counts:
+    leaderboard = ""
+    medals = ["🥇", "🥈", "🥉"]
+    for i, (keyword, count) in enumerate(sorted_counts):
+        medal = medals[i] if i < 3 else f"`{i+1}.`"
+        leaderboard += f"{medal} **{keyword}** — {count} detection(s)\n"
+    embed.add_field(name="━━━ Leaderboard ━━━", value=leaderboard, inline=False)
 
 async def setup(bot):
 
     await bot.add_cog(StatusPage(bot))
+
