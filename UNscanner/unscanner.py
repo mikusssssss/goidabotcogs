@@ -4,7 +4,7 @@ from datetime import datetime, timezone, timedelta
 
 KEYWORDS = ["netanyahu", "big yahu", "jew", "goy", "juda", "mossad", "goyim", "yahu"]
 CHALLENGE_NAME = "BIG Y Challenge"
-FAIL_MESSAGE = "YOU FAILED!!! THE UN HAS BEEN NOTIFIED. YOU ARE A THIEF!!! YOU ARE A THIEF!!! YOU ARE A THIEF!!!  "
+FAIL_MESSAGE = "YOU FAILED!!! THE UN HAS BEEN NOTIFIED. YOU ARE A THIEF!!! YOU ARE A THIEF!!! YOU ARE A THIEF!!! "
 WIN_MESSAGE = "Good! You have not disrespected the best country in the last 2 days! The UN is happy."
 
 class StatusPage(commands.Cog):
@@ -40,21 +40,12 @@ class StatusPage(commands.Cog):
             color=discord.Color(color)
         )
 
-<<<<<<< HEAD
         sorted_counts = sorted(
             [(k, v) for k, v in recent_counts.items() if v > 0],
             key=lambda x: x[1],
             reverse=True
         )
-=======
-sorted_counts = sorted(
-    [(k, v) for k, v in recent_counts.items() if v > 0],
-    key=lambda x: x[1],
-    reverse=True
-)
->>>>>>> 04789fafa9223b35db9bef2f53e7044d4f976872
 
-<<<<<<< HEAD
         if sorted_counts:
             leaderboard = ""
             medals = ["🥇", "🥈", "🥉"]
@@ -65,17 +56,6 @@ sorted_counts = sorted(
 
         embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
         await ctx.send(embed=embed)
-=======
-if sorted_counts:
-    leaderboard = ""
-    medals = ["🥇", "🥈", "🥉"]
-    for i, (keyword, count) in enumerate(sorted_counts):
-        medal = medals[i] if i < 3 else f"`{i+1}.`"
-        leaderboard += f"{medal} **{keyword}** — {count} detection(s)\n"
-    embed.add_field(name="━━━ Leaderboard ━━━", value=leaderboard, inline=False)
->>>>>>> 04789fafa9223b35db9bef2f53e7044d4f976872
 
 async def setup(bot):
-
     await bot.add_cog(StatusPage(bot))
-
