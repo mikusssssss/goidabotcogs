@@ -10,7 +10,7 @@ class YaraBoobs(commands.Cog):
     @commands.command(name="yaraboobs")
     async def yaraboobs(self, ctx):
         size = await self.config.size()
-        size += 1
+        size += 2
         await self.config.size.set(size)
 
         color = await self.bot._config.color()
