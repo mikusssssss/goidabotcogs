@@ -4,16 +4,15 @@ import aiohttp
 from datetime import datetime, timezone
 
 SERVERS = {
-    "Goob Station": [
-        ("Goob Alpha", "https://alpha.goobstation.com/status"),
-        ("Goob Sigma", "https://sigma.goobstation.com/status"),
-        ("Goob Omega", "https://omega.goobstation.com/status"),
-    ],
     "Monolith Station": [
         ("Monolith Inferno", "https://inferno.monolithstation.com/status"),
     ],
     "RMC": [
         ("Alamo", "https://alamo.rouny-ss14.com/status"),
+    ],
+    "Goob Station": [
+        ("Goob Alpha", "https://alpha.goobstation.com/status"),
+        ("Goob Sigma", "https://sigma.goobstation.com/status"),
     ],
 }
 
