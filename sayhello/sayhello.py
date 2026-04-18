@@ -16,27 +16,33 @@ class SayHello(commands.Cog):
         return discord.Color(color)
 
     def extract_outside_content(self, message: str):
-        pattern = r'(<[@#&!][0-9]+>|<@&[0-9]+>|https?://\S+)'
+        pattern = r'(<@!?[0-9]+>|<@&[0-9]+>|<#[0-9]+>|https?://\S+)'
         outside = " ".join(re.findall(pattern, message))
         return outside if outside else None
+
+    def strip_outside_content(self, message: str):
+        pattern = r'(<@!?[0-9]+>|<@&[0-9]+>|<#[0-9]+>|https?://\S+)'
+        return re.sub(pattern, '', message).strip()
 
     @discord.app_commands.command(name="say", description="Make the bot repeat your message")
     async def say(self, interaction: discord.Interaction, message: str):
         color = await self.get_embed_color(interaction.user)
-        embed = discord.Embed(description=message, color=color)
+        outside = self.extract_outside_content(message)
+        cleaned = self.strip_outside_content(message)
+        embed = discord.Embed(description=cleaned, color=color)
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.display_avatar.url)
         embed.set_footer(text=f"goidabot | {interaction.user.name}", icon_url=self.bot.user.display_avatar.url)
-        outside = self.extract_outside_content(message)
         await interaction.response.send_message(content=outside, embed=embed)
 
     @discord.app_commands.command(name="saywithimage", description="Make the bot repeat your message with an image")
     async def saywithimage(self, interaction: discord.Interaction, message: str, image: discord.Attachment):
         color = await self.get_embed_color(interaction.user)
-        embed = discord.Embed(description=message, color=color)
+        outside = self.extract_outside_content(message)
+        cleaned = self.strip_outside_content(message)
+        embed = discord.Embed(description=cleaned, color=color)
         embed.set_author(name=interaction.user.display_name, icon_url=interaction.user.display_avatar.url)
         embed.set_image(url=image.url)
         embed.set_footer(text=f"goidabot | {interaction.user.name}", icon_url=self.bot.user.display_avatar.url)
-        outside = self.extract_outside_content(message)
         await interaction.response.send_message(content=outside, embed=embed)
 
     @discord.app_commands.command(name="setcolor", description="Set your personal embed color (e.g. #ff0000)")
@@ -46,7 +52,7 @@ class SayHello(commands.Cog):
             color_int = int(color, 16)
             await self.config.user(interaction.user).color.set(color_int)
             embed = discord.Embed(
-                description=f"Your embed color has been set",
+                description="Your embed color has been set",
                 color=discord.Color(color_int)
             )
             await interaction.response.send_message(embed=embed, ephemeral=True)
