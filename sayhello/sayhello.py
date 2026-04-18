@@ -16,12 +16,12 @@ class SayHello(commands.Cog):
         return discord.Color(color)
 
     def extract_outside_content(self, message: str):
-        pattern = r'(<@!?[0-9]+>|<@&[0-9]+>|<#[0-9]+>|https?://\S+)'
+        pattern = r'(<@!?[0-9]+>|<@&[0-9]+>|<#[0-9]+>)'
         outside = " ".join(re.findall(pattern, message))
         return outside if outside else None
 
     def strip_outside_content(self, message: str):
-        pattern = r'(<@!?[0-9]+>|<@&[0-9]+>|<#[0-9]+>|https?://\S+)'
+        pattern = r'(<@!?[0-9]+>|<@&[0-9]+>|<#[0-9]+>)'
         return re.sub(pattern, '', message).strip()
 
     @discord.app_commands.command(name="say", description="Make the bot repeat your message")
@@ -44,6 +44,10 @@ class SayHello(commands.Cog):
         embed.set_image(url=image.url)
         embed.set_footer(text=f"goidabot | {interaction.user.name}", icon_url=self.bot.user.display_avatar.url)
         await interaction.response.send_message(content=outside, embed=embed)
+
+    @discord.app_commands.command(name="embed", description="Send a link and embed it")
+    async def embed(self, interaction: discord.Interaction, link: str):
+    await interaction.response.send_message(content=f"{link}\n{interaction.user.display_name} ||{interaction.user.id}||")
 
     @discord.app_commands.command(name="setcolor", description="Set your personal embed color (e.g. #ff0000)")
     async def setcolor(self, interaction: discord.Interaction, color: str):
