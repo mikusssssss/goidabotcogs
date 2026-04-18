@@ -47,7 +47,7 @@ class SayHello(commands.Cog):
 
     @discord.app_commands.command(name="embed", description="Send a link and embed it")
     async def embed(self, interaction: discord.Interaction, link: str):
-    await interaction.response.send_message(content=f"{link}\n{interaction.user.display_name} ||{interaction.user.id}||")
+        await interaction.response.send_message(content=f"{link}\n{interaction.user.display_name} ||{interaction.user.id}||")
 
     @discord.app_commands.command(name="setcolor", description="Set your personal embed color (e.g. #ff0000)")
     async def setcolor(self, interaction: discord.Interaction, color: str):
