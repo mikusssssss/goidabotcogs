@@ -1,28 +1,48 @@
 from redbot.core import commands, Config
 import discord
+import asyncio
+from datetime import datetime, timezone
 
 class Krawheggs(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=1234567891)
         self.config.register_global(count=0, upgrades=0)
+        self.pending = 0
+        self.last_use = None
+        self.batch_task = None
 
-    @commands.command(name="krawheggs")
-    async def krawheggs(self, ctx):
+    async def flush_pending(self):
+        await asyncio.sleep(5)
+        if self.pending == 0:
+            return
+
         upgrades = await self.config.upgrades()
         eggs_per_use = 2 + upgrades
+        total_eggs = self.pending * eggs_per_use
+        uses = self.pending
+        self.pending = 0
+
         count = await self.config.count()
-        count += eggs_per_use
+        count += total_eggs
         await self.config.count.set(count)
 
         color = await self.bot._config.color()
         embed = discord.Embed(
             title="krawhs eggs",
-            description=f"krawh has laid **{count} eggs**.\n+{eggs_per_use} this use!",
+            description=f"krawh has laid **{count} eggs**.\n+{total_eggs} eggs from {uses} use(s)!",
             color=discord.Color(color)
         )
-        embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
-        await ctx.send(embed=embed)
+        embed.set_footer(text="goidabot", icon_url=self.bot.user.display_avatar.url)
+        await self.last_ctx.send(embed=embed)
+
+    @commands.command(name="krawheggs")
+    async def krawheggs(self, ctx):
+        self.pending += 1
+        self.last_ctx = ctx
+
+        if self.batch_task is None or self.batch_task.done():
+            self.batch_task = asyncio.create_task(self.flush_pending())
 
     @commands.command(name="eggshop")
     async def eggshop(self, ctx):
