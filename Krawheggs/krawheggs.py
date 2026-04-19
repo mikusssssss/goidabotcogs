@@ -10,7 +10,7 @@ class Krawheggs(commands.Cog):
     @commands.command(name="krawheggs")
     async def krawheggs(self, ctx):
         count = await self.config.count()
-        count += 1
+        count += 2
         await self.config.count.set(count)
 
         color = await self.bot._config.color()
