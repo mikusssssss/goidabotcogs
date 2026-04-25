@@ -17,7 +17,7 @@ SERVERS = {
 }
 
 PLAYTESTS = {
-    "CM-SS13": [
+    "CMU": [
         ("CMU", "https://cmu.cm-ss13.com/status"),
     ],
 }
