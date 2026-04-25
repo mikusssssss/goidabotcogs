@@ -131,8 +131,8 @@ class serverstatus(commands.Cog):
                                                             except Exception:
                                                                 pass
                                                         await channel.send(
-                                                            f"Round #{prev_round_id} \"{self.last_presets.get(name, 'Unknown')}\" on \"{self.last_maps.get(name, 'Unknown')}\" on server \"{real_name}\" has ended.{duration}\n"
-                                                            f"The server will reboot shortly!"
+                                                            f"Round #{prev_round_id} **\"{self.last_presets.get(name, 'Unknown')}\"** on **\"{self.last_maps.get(name, 'Unknown')}\"** on server **\"{real_name}\"** has ended. Lasted {duration}\n"
+                                                            f"New round starting soon."
                                                         )
 
                                                 self.last_round_ids[name] = round_id
