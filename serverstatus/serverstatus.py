@@ -36,14 +36,14 @@ def format_duration(start_time_str):
     except Exception:
         return "Unknown"
 
-async def fetch_server(session, name, url):
+async def fetch_server(session, name, url, extended=False):
     try:
         async with session.get(url, timeout=aiohttp.ClientTimeout(total=5)) as resp:
             if resp.status == 200:
                 data = await resp.json(content_type=None)
                 players = data.get("players", "?")
                 soft_max = data.get("soft_max_players", "?")
-                map_name = data.get("map", "?")
+                map_name = data.get("map") or "Unknown"
                 real_name = data.get("name", name)
                 round_start = data.get("round_start_time")
                 run_level = data.get("run_level", 0)
@@ -53,7 +53,15 @@ async def fetch_server(session, name, url):
                     shift = format_duration(round_start)
                 else:
                     shift = "Unknown"
-                return f"🟢 **{real_name}**\nPlayers: {players}/{soft_max} | Map: {map_name} | Shift: {shift}\n\n"
+
+                result = f"🟢 **{real_name}**\nPlayers: {players}/{soft_max} | Map: {map_name} | Shift: {shift}"
+
+                if extended:
+                    preset = data.get("preset", "Unknown")
+                    round_id = data.get("round_id", "Unknown")
+                    result += f"\nPreset: {preset} | Round ID: {round_id}"
+
+                return result + "\n\n"
             else:
                 return f"🔴 **{name}**\nServer unreachable\n\n"
     except Exception:
@@ -87,7 +95,7 @@ class serverstatus(commands.Cog):
             for host, servers in PLAYTESTS.items():
                 field_value = ""
                 for name, url in servers:
-                    field_value += await fetch_server(session, name, url)
+                    field_value += await fetch_server(session, name, url, extended=True)
                 embed.add_field(name=f"━━━ {host} ━━━", value=field_value.strip(), inline=False)
         await ctx.send(embed=embed)
 
