@@ -12,7 +12,7 @@ class YaraBoobs(commands.Cog):
         self.batch_task = None
 
     async def flush_pending(self):
-        await asyncio.sleep(5)
+        await asyncio.sleep(2)
         if self.pending == 0:
             return
 
