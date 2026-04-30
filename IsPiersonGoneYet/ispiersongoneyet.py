@@ -1,7 +1,7 @@
 from redbot.core import commands
 import discord
 
-TARGET_USER_ID = 670470839417831430
+TARGET_USER_ID = 675095792419340319
 TARGET_GUILD_ID = 1498307093369716848
 
 class IsPiersonGoneYet(commands.Cog):
