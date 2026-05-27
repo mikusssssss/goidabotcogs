@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 
 SERVERS = {
     "Monolith Station": [
-        ("Monolith Inferno", "https://inferno.monolithstation.com/status"),
+        ("Monolith Inferno", "http://ceres.atmosia.org:1212/status"),
     ],
     "RMC": [
         ("Alamo", "https://alamo.rouny-ss14.com/status"),
