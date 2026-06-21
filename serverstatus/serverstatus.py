@@ -5,21 +5,22 @@ import asyncio
 from datetime import datetime, timezone
 
 SERVERS = {
-    "Monolith Station": [
+    "Monolith": [
         ("Monolith Inferno", "http://ceres.atmosia.org:1212/status"),
-    ],
-    "RMC": [
-        ("Alamo", "https://alamo.rouny-ss14.com/status"),
     ],
     "Goob Station": [
         ("Goob Alpha", "https://alpha.goobstation.com/status"),
         ("Goob Sigma", "https://sigma.goobstation.com/status"),
+        ("Goob Basil", "https://omega.goobstation.com/status"),
     ],
 }
 
 PLAYTESTS = {
     "CMU": [
         ("CMU", "https://cmu.cm-ss13.com/status"),
+    ],
+    "Inky Station": [
+        ("Inky 1", "http://ceres.atmosia.org:1213/status"),
     ],
 }
 
