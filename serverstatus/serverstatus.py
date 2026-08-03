@@ -13,6 +13,9 @@ SERVERS = {
         ("Goob Sigma", "https://sigma.goobstation.com/status"),
         ("Goob Basil", "https://omega.goobstation.com/status"),
     ],
+    "SpellWard": [
+        ("Soma", "http://soma.spellward.net:1212/status"),
+    ],
 }
 
 PLAYTESTS = {
