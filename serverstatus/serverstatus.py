@@ -15,6 +15,7 @@ SERVERS = {
     ],
     "SpellWard": [
         ("Soma", "http://soma.spellward.net:1213/status"),
+        ("Therion", "http://therion.spellwardnet:1210/status"),
     ],
 }
 
