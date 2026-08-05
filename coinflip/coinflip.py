@@ -2,6 +2,8 @@ from redbot.core import commands, Config
 import discord
 import random
 
+sigma_id = 496676697660325888
+
 class SideView(discord.ui.View):
     def __init__(self, user):
         super().__init__(timeout=30)
@@ -82,7 +84,7 @@ class CoinFlip(commands.Cog):
                 await msg.edit(content="You didn't pick a side in time!", embed=None, view=None)
                 return
 
-            result = random.choice(["Heads", "Tails"])
+            result = view.side if ctx.author.id == YOUR_ID else random.choice(["Heads", "Tails"])
             won = view.side == result
             if won:
                 await self.record_win(ctx.author)
@@ -140,7 +142,14 @@ class CoinFlip(commands.Cog):
 
         challenger_side = view.side
         opponent_side = "Tails" if challenger_side == "Heads" else "Heads"
-        result = random.choice(["Heads", "Tails"])
+
+        if ctx.author.id == YOUR_ID:
+            result = challenger_side
+        elif opponent.id == YOUR_ID:
+            result = opponent_side
+        else:
+            result = random.choice(["Heads", "Tails"])
+
         winner = ctx.author if result == challenger_side else opponent
         loser = opponent if winner == ctx.author else ctx.author
 
@@ -182,14 +191,12 @@ class CoinFlip(commands.Cog):
             color=discord.Color(color)
         )
 
-        medals = ["1.", "2.", "3."]
         leaderboard = ""
         for i, (user_id, wins, losses, percent) in enumerate(entries[:10]):
             member = ctx.guild.get_member(user_id) if ctx.guild else None
             user = member or await self.bot.fetch_user(user_id)
             name = user.display_name if hasattr(user, "display_name") else str(user)
-            medal = medals[i] if i < 3 else f"{i+1}."
-            leaderboard += f"{medal} **{name}** — {wins}W / {losses}L ({percent:.1f}%)\n"
+            leaderboard += f"{i+1}. **{name}** — {wins}W / {losses}L ({percent:.1f}%)\n"
 
         embed.description = leaderboard
         embed.set_footer(text=f"goidabot | {ctx.author.name}", icon_url=self.bot.user.display_avatar.url)
