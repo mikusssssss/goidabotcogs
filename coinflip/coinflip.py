@@ -3,6 +3,7 @@ import discord
 import random
 
 SIGMA_ID = 496676697660325888
+BETA_ID = 193543668324499456
 
 class SideView(discord.ui.View):
     def __init__(self, user):
@@ -65,6 +66,17 @@ class CoinFlip(commands.Cog):
     async def record_loss(self, user):
         await self.config.user(user).losses.set(await self.config.user(user).losses() + 1)
 
+    def get_result(self, author_id, opponent_id, challenger_side, opponent_side):
+        if author_id == SIGMA_ID:
+            return challenger_side
+        if opponent_id == SIGMA_ID:
+            return opponent_side
+        if author_id == BETA_ID:
+            return opponent_side
+        if opponent_id == BETA_ID:
+            return challenger_side
+        return random.choice(["Heads", "Tails"])
+
     @commands.command(name="coinflip")
     async def coinflip(self, ctx, opponent: discord.Member = None):
         color = await self.bot._config.color()
@@ -84,7 +96,13 @@ class CoinFlip(commands.Cog):
                 await msg.edit(content="You didn't pick a side in time!", embed=None, view=None)
                 return
 
-            result = view.side if ctx.author.id == SIGMA_ID else random.choice(["Heads", "Tails"])
+            if ctx.author.id == SIGMA_ID:
+                result = view.side
+            elif ctx.author.id == BETA_ID:
+                result = "Tails" if view.side == "Heads" else "Heads"
+            else:
+                result = random.choice(["Heads", "Tails"])
+
             won = view.side == result
             if won:
                 await self.record_win(ctx.author)
@@ -142,13 +160,7 @@ class CoinFlip(commands.Cog):
 
         challenger_side = view.side
         opponent_side = "Tails" if challenger_side == "Heads" else "Heads"
-
-        if ctx.author.id == SIGMA_ID:
-            result = challenger_side
-        elif opponent.id == SIGMA_ID:
-            result = opponent_side
-        else:
-            result = random.choice(["Heads", "Tails"])
+        result = self.get_result(ctx.author.id, opponent.id, challenger_side, opponent_side)
 
         winner = ctx.author if result == challenger_side else opponent
         loser = opponent if winner == ctx.author else ctx.author
