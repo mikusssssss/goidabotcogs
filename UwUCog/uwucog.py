@@ -21,9 +21,13 @@ def uwuify(text: str) -> str:
     text = re.sub(r'punch', 'boop', text, flags=re.IGNORECASE)
     text = re.sub(r'kill', 'hug', text, flags=re.IGNORECASE)
     text = re.sub(r'kys', 'love yourself', text, flags=re.IGNORECASE)
-    text = re.sub(r'kill yourself', 'kiss yourself', text, flags=re.IGNORECASE)
     text = re.sub(r'stab', 'boop', text, flags=re.IGNORECASE)
     text = re.sub(r'shoot', 'kiss', text, flags=re.IGNORECASE)
+    text = re.sub(r'suicide', 'love', text, flags=re.IGNORECASE)
+    text = re.sub(r'fuck', 'love', text, flags=re.IGNORECASE)
+    text = re.sub(r'hate', 'love', text, flags=re.IGNORECASE)
+    text = re.sub(r'murder', 'boop', text, flags=re.IGNORECASE)
+    text = re.sub(r'feroxi', 'FEROXI ARE THE BEST SPECIES', text, flags=re.IGNORECASE)
     return text
 
 class UwuCog(commands.Cog):
