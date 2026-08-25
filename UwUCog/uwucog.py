@@ -3,7 +3,7 @@ import discord
 import re
 import random
 
-state_architect = 496676697660325888
+SIGMA_ID = 496676697660325888
 
 def uwuify(text: str) -> str:
     text = re.sub(r'r|l', 'w', text)
@@ -107,8 +107,7 @@ class UwuCog(commands.Cog):
         if message.author.bot or not message.guild:
             return
 
-        if message.author.id == state_architect:
-            await message.channel.send("nice try :3")
+        if message.author.id == SIGMA_ID
             return
 
         targets = await self.config.guild(message.guild).targets()
