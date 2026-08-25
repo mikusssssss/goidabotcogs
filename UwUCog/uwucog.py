@@ -1,6 +1,7 @@
 from redbot.core import commands, Config
 import discord
 import re
+import random
 
 def uwuify(text: str) -> str:
     text = re.sub(r'r|l', 'w', text)
