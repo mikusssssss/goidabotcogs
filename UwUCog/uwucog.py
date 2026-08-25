@@ -13,6 +13,7 @@ def uwuify(text: str) -> str:
     text = re.sub(r'Th\b', 'D', text)
     faces = ["OwO", "UwU", ">w<", "^w^", "uwu", "owo"]
     text = re.sub(r'!+', lambda m: f' {random.choice(faces)}!', text)
+    text = re.sub(r'spits on you', 'paws at you', text, flags=re.IGNORECASE)
     return text
 
 class UwuCog(commands.Cog):
