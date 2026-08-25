@@ -8,11 +8,6 @@ SERVERS = {
     "Monolith": [
         ("Monolith Inferno", "http://ceres.atmosia.org:1212/status"),
     ],
-    "Goob Station": [
-        ("Goob Alpha", "https://alpha.goobstation.com/status"),
-        ("Goob Sigma", "https://sigma.goobstation.com/status"),
-        ("Goob Basil", "https://omega.goobstation.com/status"),
-    ],
     "SpellWard": [
         ("Soma", "http://soma.spellward.net:1212/status"),
         ("Therion", "http://therion.spellward.net:1220/status"),
