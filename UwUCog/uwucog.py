@@ -48,8 +48,8 @@ class UwuCog(commands.Cog):
             if member.id in targets:
                 await ctx.send(f"{member.display_name} is already being uwuified!")
                 return
-            if len(targets) >= 5:
-                await ctx.send("Maximum of 5 members can be uwuified at once!")
+            if len(targets) >= 20:
+                await ctx.send("Maximum of 20 members can be uwuified at once!")
                 return
             targets.append(member.id)
 
