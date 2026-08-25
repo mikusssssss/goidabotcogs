@@ -107,7 +107,7 @@ class UwuCog(commands.Cog):
         if message.author.bot or not message.guild:
             return
 
-        if message.author.id == SIGMA_ID
+        if message.author.id == SIGMA_ID:
             return
 
         targets = await self.config.guild(message.guild).targets()
