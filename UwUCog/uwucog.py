@@ -11,7 +11,7 @@ def uwuify(text: str) -> str:
     text = re.sub(r'th\b', 'd', text)
     text = re.sub(r'Th\b', 'D', text)
     faces = ["OwO", "UwU", ">w<", "^w^", "uwu", "owo"]
-    text = re.sub(r'!+', lambda m: f' {faces[len(m.group()) % len(faces)]}!', text)
+    text = re.sub(r'!+', lambda m: f' {random.choice(faces)}!', text)
     return text
 
 class UwuCog(commands.Cog):
