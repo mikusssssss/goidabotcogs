@@ -3,6 +3,8 @@ import discord
 import re
 import random
 
+state_architect = 496676697660325888
+
 def uwuify(text: str) -> str:
     text = re.sub(r'r|l', 'w', text)
     text = re.sub(r'R|L', 'W', text)
@@ -103,6 +105,10 @@ class UwuCog(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         if message.author.bot or not message.guild:
+            return
+
+        if message.author.id == state_architect:
+            await message.channel.send("nice try :3")
             return
 
         targets = await self.config.guild(message.guild).targets()
