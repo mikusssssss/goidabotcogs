@@ -75,9 +75,9 @@ class UwuCog(commands.Cog):
                     if member.id in targets:
                         targets.remove(member.id)
 
-    @commands.command(name="uwustop")
+    @commands.command(name="unuwuify")
     @commands.has_permissions(manage_messages=True)
-    async def uwustop(self, ctx, member: discord.Member):
+    async def unuwuify(self, ctx, member: discord.Member):
         async with self.config.guild(ctx.guild).targets() as targets:
             if member.id in targets:
                 targets.remove(member.id)
