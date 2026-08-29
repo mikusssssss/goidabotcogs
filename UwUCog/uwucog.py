@@ -29,7 +29,6 @@ def uwuify(text: str) -> str:
     text = re.sub(r'suicide', 'love', text, flags=re.IGNORECASE)
     text = re.sub(r'fuck', 'love', text, flags=re.IGNORECASE)
     text = re.sub(r'hate', 'love', text, flags=re.IGNORECASE)
-    text = re.sub(r'murder', 'boop', text, flags=re.IGNORECASE)
     text = re.sub(r'feroxi', 'FEROXI ARE THE BEST SPECIES', text, flags=re.IGNORECASE)
     return text
 
@@ -90,6 +89,12 @@ class UwuCog(commands.Cog):
         await self.config.guild(ctx.guild).webhook_token.set(None)
         await self.config.guild(ctx.guild).channel_id.set(None)
         await ctx.send("uwuify config reset! Run `.uwuify @user` to set it up again.")
+
+    @commands.command(name="uwuclear")
+    @commands.is_owner()
+    async def uwuclear(self, ctx):
+        await self.config.guild(ctx.guild).targets.set([])
+        await ctx.send("uwuify list cleared!")
 
     @commands.command(name="unuwuify")
     @commands.has_permissions(manage_messages=True)
