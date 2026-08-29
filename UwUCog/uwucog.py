@@ -2,6 +2,7 @@ from redbot.core import commands, Config
 import discord
 import re
 import random
+import asyncio
 
 SIGMA_ID = 496676697660325888
 
@@ -68,8 +69,6 @@ class UwuCog(commands.Cog):
         if duration:
             seconds = self.parse_duration(duration)
             if seconds:
-                await discord.utils.sleep_until(discord.utils.utcnow().__class__.utcnow().replace(tzinfo=None))
-                import asyncio
                 await asyncio.sleep(seconds)
                 async with self.config.guild(ctx.guild).targets() as targets:
                     if member.id in targets:
