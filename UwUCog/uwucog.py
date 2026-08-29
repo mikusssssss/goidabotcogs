@@ -64,7 +64,16 @@ class UwuCog(commands.Cog):
             await self.config.guild(ctx.guild).channel_id.set(ctx.channel.id)
             await ctx.send(f"uwuify set up in {ctx.channel.mention}! Now uwuifying {member.display_name}.")
         else:
-            await ctx.send(f"Now uwuifying {member.display_name}!")
+            webhook_id = await self.config.guild(ctx.guild).webhook_id()
+            channel = self.bot.get_channel(channel_id)
+            existing_webhooks = await channel.webhooks()
+            if not any(w.id == webhook_id for w in existing_webhooks):
+                webhook = await channel.create_webhook(name="uwuify")
+                await self.config.guild(ctx.guild).webhook_id.set(webhook.id)
+                await self.config.guild(ctx.guild).webhook_token.set(webhook.token)
+                await ctx.send(f"Webhook recreated in <#{channel_id}>! Now uwuifying {member.display_name}.")
+            else:
+                await ctx.send(f"Now uwuifying {member.display_name}!")
 
         if duration:
             seconds = self.parse_duration(duration)
@@ -73,6 +82,14 @@ class UwuCog(commands.Cog):
                 async with self.config.guild(ctx.guild).targets() as targets:
                     if member.id in targets:
                         targets.remove(member.id)
+
+    @commands.command(name="uwureset")
+    @commands.is_owner()
+    async def uwureset(self, ctx):
+        await self.config.guild(ctx.guild).webhook_id.set(None)
+        await self.config.guild(ctx.guild).webhook_token.set(None)
+        await self.config.guild(ctx.guild).channel_id.set(None)
+        await ctx.send("uwuify config reset! Run `.uwuify @user` to set it up again.")
 
     @commands.command(name="unuwuify")
     @commands.has_permissions(manage_messages=True)
