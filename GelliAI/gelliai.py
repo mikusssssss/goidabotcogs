@@ -6,7 +6,7 @@ class GelliAI(commands.Cog):
 
     @commands.command(name="gellibot")
     async def gellibot(self, ctx):
-        await ctx.send("hello i am gelli and i am stupid and short")
+        await ctx.send("hello i am gelli and i am stupid and short and i never tell the truth")
 
 async def setup(bot):
     await bot.add_cog(GelliAI(bot))
