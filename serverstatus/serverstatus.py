@@ -21,6 +21,9 @@ PLAYTESTS = {
     "Inky Station": [
         ("Inky 1", "http://ceres.atmosia.org:1213/status"),
     ],
+    "Mono LEO": [
+        ("Vesta", "http://vesta.atmosia.org:1212/status"),
+    ],
 }
 
 def format_duration(start_time_str):
